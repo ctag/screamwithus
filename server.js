@@ -7,10 +7,36 @@ var io = require('socket.io')(http);
 //   res.sendFile(__dirname + '/build/index.html');
 // });
 
+var activeUsers = 0
+var connectedSockets = {}
+
 io.on('connection', function(socket){
-  console.log('a user connected');
+  console.log('a user connected: ', socket.id);
+  connectedSockets[socket.id] = false
+
+  socket.on('button pressed', () => {
+    if (connectedSockets[socket.id] == false) {
+      connectedSockets[socket.id] = true
+      activeUsers++
+      io.emit('activeUserCount', activeUsers)
+    }
+  })
+
+  socket.on('button released', () => {
+    if (connectedSockets[socket.id] == true) {
+      connectedSockets[socket.id] = false
+      activeUsers--
+      io.emit('activeUserCount', activeUsers)
+    }
+  })
+
   socket.on('disconnect', () => {
-    console.log("a user disconnected.")
+    console.log("a user disconnected: ", socket.id)
+    if (connectedSockets[socket.id] == true) {
+      connectedSockets[socket.id] = false
+      activeUsers--
+      io.emit('activeUserCount', activeUsers)
+    }
   })
 });
 
