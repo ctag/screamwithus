@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+import openSocket from 'socket.io-client';
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.socket = openSocket()
+  }
   render() {
     return (
       <div className="App">
