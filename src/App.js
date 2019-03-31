@@ -19,6 +19,11 @@ class App extends Component {
       buttonPressed: false,
       activeUserCount: 0,
     }
+    this.tallyPhrases = [
+      'Nobody Is Screaming With Us',
+      '1 Person Is Screaming With Us',
+      ' People Are Screaming With Us',
+    ]
     this.socket = openSocket()
     this.socket.on('activeUserCount', (count) => {
       this.setState({activeUserCount: count})
@@ -37,12 +42,20 @@ class App extends Component {
     this.setState({buttonPressed: false})
   }
 
+  printTallyPhrases = () => {
+    console.log('phrase: ', this.state.activeUserCount)
+    if (this.state.activeUserCount > 1) {
+      return `${this.state.activeUserCount}${this.tallyPhrases[2]}`
+    }
+    return this.tallyPhrases[this.state.activeUserCount]
+  }
+
   render() {
     return (
       <div className="App noselect">
         <header className="App-header">
           <p>
-            People screaming now: {this.state.activeUserCount}
+            {this.printTallyPhrases()}
           </p>
           <div onMouseDown={this.ButtonPressed} onMouseUp={this.ButtonReleased}>
             <img src={this.state.buttonPressed ? buttonImg2 : buttonImg} className="App-logo noselect" draggable="false" alt="logo" />
