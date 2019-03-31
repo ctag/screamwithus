@@ -39,12 +39,14 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App" onMouseDown={this.ButtonPressed} onMouseUp={this.ButtonReleased}>
+      <div className="App noselect">
         <header className="App-header">
           <p>
             People screaming now: {this.state.activeUserCount}
           </p>
-          <img src={this.state.buttonPressed ? buttonImg2 : buttonImg} className="App-logo" alt="logo" />
+          <div onMouseDown={this.ButtonPressed} onMouseUp={this.ButtonReleased}>
+            <img src={this.state.buttonPressed ? buttonImg2 : buttonImg} className="App-logo noselect" draggable="false" alt="logo" />
+          </div>
         </header>
       </div>
     );
